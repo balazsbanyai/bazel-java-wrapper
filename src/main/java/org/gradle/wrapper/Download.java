@@ -103,7 +103,7 @@ public class Download implements IDownload {
             return;
         }
         if (!"https".equals(address.getScheme())) {
-            logger.log("WARNING Using HTTP Basic Authentication over an insecure connection to com.banyaibalazs.bazel.download the Gradle distribution. Please consider using HTTPS.");
+            logger.log("WARNING Using HTTP Basic Authentication over an insecure connection to com.banyaibalazs.bazel.downloadInto the Gradle distribution. Please consider using HTTPS.");
         }
         connection.setRequestProperty("Authorization", "Basic " + base64Encode(userInfo));
     }

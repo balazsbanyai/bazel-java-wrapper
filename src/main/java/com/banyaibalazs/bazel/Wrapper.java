@@ -23,11 +23,11 @@ public class Wrapper {
         try {
             if (!bazel.exists()) {
                 PackageGuesser guesser = new PackageGuesser(PropertyGetter.getDefault());
-                Package packag = guesser.guessPackage();
+                Package packag = guesser.guessPackage().version("0.9.0");
 
-                BazelArchive archive = new BazelArchive(getFolder());
+                BazelArchive archive = new BazelArchive(getFolder(), packag);
                 if (!archive.exists()) {
-                    archive = packag.download(getFolder());
+                    archive = packag.downloadInto(getFolder());
                 }
 
                 if (archive.hasValidSignature()) {
@@ -38,7 +38,7 @@ public class Wrapper {
                 }
             }
         } catch (DownloadException e) {
-            logger.log("Download failed due to " + e.getClass().getName());
+            logger.log("Download failed due to " + e.getCause());
         } catch (InvalidSignatureException e) {
             logger.log("The downloaded archive is not signed by bazel. Add --allow-untrusted option to force.");
         } catch (NoPackageFoundForOs e) {

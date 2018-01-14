@@ -16,7 +16,7 @@ public class Package {
     private Logger logger = new Logger(false);
 
     private static final String BASE_VERSION_ARCH_EXT = "bazel-%s-without-jdk-%s%s";
-    private static final String URL_VERSION_ARCHIVE = "https://github.com/bazelbuild/bazel/releases/download/%s/%s";
+    private static final String URL_VERSION_ARCHIVE = "https://github.com/bazelbuild/bazel/releases/downloadInto/%s/%s";
 
     private String version;
     private String arch;
@@ -41,16 +41,17 @@ public class Package {
         return String.format(BASE_VERSION_ARCH_EXT, version, arch, extension);
     }
 
-    public BazelArchive download(File destination) {
+    public BazelArchive downloadInto(File destination) {
         logger.log("Downloading bazel: " + build());
         try {
 
             Download download = new Download(logger, "wrapper", "1");
-            download.download(uri(), new File(destination, build()));
+            File downloadedFile = new File(destination, build());
+            download.download(uri(), downloadedFile);
+            return new BazelArchive(downloadedFile);
         } catch (Exception e) {
             throw new DownloadException(e);
         }
-        return new BazelArchive(destination);
     }
 
     private URI uri() {

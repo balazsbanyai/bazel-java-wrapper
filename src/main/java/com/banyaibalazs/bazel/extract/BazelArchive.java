@@ -1,6 +1,7 @@
 package com.banyaibalazs.bazel.extract;
 
 import com.banyaibalazs.bazel.Logger;
+import com.banyaibalazs.bazel.packag.Package;
 
 import java.io.File;
 
@@ -13,9 +14,12 @@ public class BazelArchive {
 
     private Logger logger = new Logger(false);
 
-    public BazelArchive(File folder) {
-        this.archive = new File(folder, "installer.zip");
+    public BazelArchive(File file) {
+        this.archive = file;
+    }
 
+    public BazelArchive(File folder, Package packag) {
+        this.archive = new File(folder, packag.build());
     }
 
     public boolean exists() {
